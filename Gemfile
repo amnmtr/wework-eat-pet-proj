@@ -20,6 +20,8 @@ gem 'pg'
 gem 'puma'
 gem 'rails'
 gem 'sidekiq'
+gem 'ruby-debug-ide'
+gem 'debase'
 
 group :development do
   gem 'annotate'
