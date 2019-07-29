@@ -20,6 +20,7 @@ gem 'pg'
 gem 'puma'
 gem 'rails'
 gem 'sidekiq'
+gem 'active_model_serializers'
 gem 'ruby-debug-ide'
 gem 'debase'
 
@@ -41,7 +42,7 @@ group :development, :test do
   gem 'byebug'
   gem 'dotenv-rails'
   gem 'dotenv-sync'
-  gem 'pry-byebug'
+  #gem 'pry-byebug'
   gem 'pry-rails'
   gem 'spring'
 end

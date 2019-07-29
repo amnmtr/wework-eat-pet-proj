@@ -15,6 +15,7 @@ fi
 
 docker volume rm bp-we-eat-gems &> /dev/null || /usr/bin/true
 docker volume create --name=bp-we-eat-gems
+docker volume create --name=bp-we-eat-gems-backend
 docker volume create --name=bp-we-eat-spring
 
 docker-compose run base bundle config --local without "production"
