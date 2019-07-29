@@ -23,6 +23,8 @@ gem 'sidekiq'
 gem 'active_model_serializers'
 gem 'ruby-debug-ide'
 gem 'debase'
+gem 'sigdump', require: 'sigdump/setup'
+
 
 group :development do
   gem 'annotate'
