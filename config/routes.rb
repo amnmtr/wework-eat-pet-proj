@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         end
       resources :cuisines, only: :index
       resources :reviews, only: [:index, :create, :destroy]
-      post 'restaurants/:restaurant_id/rating', to: 'restaurants#averageRating', as: :average_restaurant_rating
+      post 'restaurants/:restaurant_id/rating', to: 'restaurants#average_rating', as: :average_restaurant_rating
 
     end
   end

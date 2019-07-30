@@ -22,7 +22,7 @@ class Restaurant < ApplicationRecord
   validates_presence_of :name, :address, :max_delivery_time, :accepts_10bis, :coordinates, :cuisine_id
   validate :coordinates_is_a_json
   validates :max_delivery_time, :numericality => { :greater_than_or_equal_to => 0 }
-
+  validates_inclusion_of :accepts_10bis, :in => [true, false]
 
   GEO_LOCATION_SCHEMA = {
       "type" => "object",
@@ -33,16 +33,15 @@ class Restaurant < ApplicationRecord
       }
   }
 
-
   def coordinates_is_a_json
 
     begin
-      puts "validating coordinates"
-      puts GEO_LOCATION_SCHEMA.to_s
-      puts coordinates
+      Rails.logger.info {"validating coordinates"}
+      Rails.logger.debug {GEO_LOCATION_SCHEMA.to_s}
+      Rails.logger.info {coordinates}
       JSON::Validator.validate!(GEO_LOCATION_SCHEMA, coordinates)
     rescue JSON::Schema::ValidationError => e
-      puts "json validation error " + e.message
+      Rails.logger.info {"json validation error " + e.message}
       errors.add(:coordinates, e.message)
     end
   end

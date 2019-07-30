@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
   before_action :find_restaurant , only: [:create]
 
   def index
-    render :json => Review.all.to_json(:except => [:created_at, :updated_at, :id, :restaurant_id])
+    render :json => Review.all.to_json(except: [:created_at, :updated_at, :id, :restaurant_id])
   end
 
   def new
@@ -10,11 +10,9 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    puts "creating a review #{params["review"]}"
+    Rails.logger.info {"creating a review #{params["review"]}"}
     # Parameters: {"review"=>{"name"=>"dsdas", "comment"=>"dasdas", "rating"=>4, "restaurant_id"=>2}}
-    @review = @restaurant.reviews.create(review_params)
-    #@review = Review.new(review_params)
-    #@review.restaurant = @restaurant
+    @review = @restaurant.reviews.new(review_params)
 
     if @review.save
       render json: { msg: "created review"}, status: :ok
@@ -39,8 +37,6 @@ class ReviewsController < ApplicationController
       end
     rescue ActiveRecord::RecordNotFound  => e
       render json: { errors: e.message }, status: :bad_request
-    rescue Exception => e
-      render json: { errors: e.message }, status: :internal_server_error
     end
 
   end
@@ -56,8 +52,6 @@ class ReviewsController < ApplicationController
       end
     rescue ActiveRecord::RecordNotFound  => e
       render json: { errors: e.message }, status: :bad_request
-    rescue Exception => e
-      render json: { errors: e.message }, status: :internal_server_error
     end
 
   end
