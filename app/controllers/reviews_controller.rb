@@ -29,23 +29,37 @@ class ReviewsController < ApplicationController
   end
 
   def update
-    @review = Review.find(params[:id])
+    begin
+      @review = Review.find(params[:id])
 
-    if @review.update_attributes(review_params)
-      render json: { msg: "updated review"}, status: :ok
-    else
-      render json: { errors: @review.errors }, status: :unprocessable_entity
+      if @review.update_attributes(review_params)
+        render json: { msg: "updated review"}, status: :ok
+      else
+        render json: { errors: @review.errors }, status: :unprocessable_entity
+      end
+    rescue ActiveRecord::RecordNotFound  => e
+      render json: { errors: e.message }, status: :bad_request
+    rescue Exception => e
+      render json: { errors: e.message }, status: :internal_server_error
     end
+
   end
 
   def destroy
-    @review = Review.find(params[:id])
+    begin
+      @review = Review.find(params[:id])
 
-    if @review.destroy
-      render json: { msg: "deleted review"}, status: :ok
-    else
-      render json: { errors: @review.errors }, status: :unprocessable_entity
+      if @review.destroy
+        render json: { msg: "deleted review"}, status: :ok
+      else
+        render json: { errors: @review.errors }, status: :unprocessable_entity
+      end
+    rescue ActiveRecord::RecordNotFound  => e
+      render json: { errors: e.message }, status: :bad_request
+    rescue Exception => e
+      render json: { errors: e.message }, status: :internal_server_error
     end
+
   end
 
   private
