@@ -14,20 +14,15 @@ class RestaurantsController < ApplicationController
     begin
       @restaurant = Restaurant.find(params["restaurant_id"])
       if !@restaurant.reviews.empty?
-
         @avg = @restaurant.reviews.reduce(0) { |sum, el| sum + el.rating }.to_f / @restaurant.reviews.size
-
       end
     rescue ActiveRecord::RecordNotFound  => e
-      e.message
-      raise e
+      render json: { errors: e.message }, status: :bad_request
     rescue Exception => e
-      e.message
+      render json: { errors: e.message }, status: :internal_server_error
     end
 
-
     render  :json => { "average_rating": @avg}
-
   end
 
 end

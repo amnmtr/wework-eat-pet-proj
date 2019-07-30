@@ -17,10 +17,8 @@ class ReviewsController < ApplicationController
     #@review.restaurant = @restaurant
 
     if @review.save
-      #TODO
-      render :show
+      render json: { msg: "created review"}, status: :ok
     else
-      #TODO
       render json: { errors: @review.errors }, status: :unprocessable_entity
     end
 
@@ -34,7 +32,7 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
 
     if @review.update_attributes(review_params)
-      render :show
+      render json: { msg: "updated review"}, status: :ok
     else
       render json: { errors: @review.errors }, status: :unprocessable_entity
     end
@@ -44,7 +42,7 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
 
     if @review.destroy
-      render json: {}
+      render json: { msg: "deleted review"}, status: :ok
     else
       render json: { errors: @review.errors }, status: :unprocessable_entity
     end
