@@ -19,8 +19,13 @@ gem 'newrelic_rpm'
 gem 'pg'
 gem 'puma'
 gem 'rails'
+gem 'rake'
 gem 'sidekiq'
 gem 'active_model_serializers'
+gem "activemodel", require: "active_model"
+gem 'faraday'
+gem 'hashie'
+gem "json-schema"
 gem 'ruby-debug-ide'
 gem 'debase'
 gem 'sigdump', require: 'sigdump/setup'

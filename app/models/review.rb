@@ -12,6 +12,10 @@
 #
 
 class Review < ApplicationRecord
+
   belongs_to :restaurant, foreign_key: :restaurant_id
+
+  validates_presence_of :name, :rating
+  validates_inclusion_of :rating, :in => 1..5
 
 end

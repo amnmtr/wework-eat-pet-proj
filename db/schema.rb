@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20190724221254) do
     t.integer "max_delivery_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.json "coordinates"
+    t.json :coordinates, default: "{}"
     t.integer "cuisine_id"
     t.index ["cuisine_id"], name: "index_restaurants_on_cuisine_id"
   end
