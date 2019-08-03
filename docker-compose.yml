@@ -8,7 +8,6 @@ networks:
 services:
   base: &app_base
     build: .
-    image: baseimage:master
     # Uncomment to add environment variables
     # env_file: .env
     environment:
@@ -35,7 +34,7 @@ services:
       # bp-we-eat-gems is a docker volume that will persist your gems for local use
       # Since ruby gems are just interpreted files, we can persist the folder that they
       # Contain easily
-      - bp-we-eat-gems-backend:/usr/local/bundle
+      # - bp-we-eat-gems-backend:/usr/local/bundle
       # Spring volume just so all of the services can take advantage of spring
       # Needs to be exposed to all of them
       - bp-we-eat-spring:/tmp/spring-0
@@ -46,9 +45,24 @@ services:
 
   backend:
     <<: *app_base
+    command: "bundle exec rdebug-ide --debug  --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- bin/rails s -b 0.0.0.0"
+    environment:
+      - PORT=80
+      - DATABASE_URL=postgres://postgres:R0tate1@pg/
+      - REDIS_URL=redis://redis:6379
+      - RABBIT_URL=amqp://guest:guest@rabbitmq
+      - NEW_RELIC_AGENT_ENABLED=false
+      - SIDEKIQ_USERNAME=admin
+      - SIDEKIQ_PASSWORD=admin
+      - RAILS_ENV=development
+      - WORKER_TIMEOUT=3600
+      - SIGDUMP_SIGNAL=TSTP
+      - SIGDUMP_PATH=-
     ports:
-    - "5000:80"
+    - "5002:3000"
+    - "5001:80"
     - "1234:1234"
+    - "26162:26162"
     networks:
       default:
         aliases:

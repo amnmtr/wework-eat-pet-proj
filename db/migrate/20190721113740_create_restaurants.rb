@@ -4,10 +4,10 @@ class CreateRestaurants < ActiveRecord::Migration[5.1]
 
       t.string :name
       t.text :address
-      t.boolean :ten_bis
+      t.boolean :accepts_10bis
       t.integer :max_delivery_time
-      t.decimal :longitude
-      t.decimal :latitude
+      t.json :coordinates
+      t.references :cuisine, index: true, foreign_key: true
       t.timestamps
     end
   end

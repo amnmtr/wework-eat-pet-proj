@@ -10,8 +10,7 @@ class ApplicationController < ActionController::API
       error_message: exception.message
     }
   
-    render status: :internal_server_error,
-            json: response_payload
+    render status: :internal_server_error, json: response_payload
   end
 
   rescue_from ActionController::RoutingError, ActiveRecord::RecordNotFound do |exception|
@@ -20,4 +19,5 @@ class ApplicationController < ActionController::API
               error_message: 'Resource not found'
             }
   end
+  
 end

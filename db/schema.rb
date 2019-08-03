@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190724221254) do
+ActiveRecord::Schema.define(version: 20190724095857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,28 +38,23 @@ ActiveRecord::Schema.define(version: 20190724221254) do
     t.text "address"
     t.boolean "accepts_10bis"
     t.integer "max_delivery_time"
+    t.json "coordinates"
+    t.bigint "cuisine_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.json :coordinates, default: "{}"
-    t.integer "cuisine_id"
     t.index ["cuisine_id"], name: "index_restaurants_on_cuisine_id"
   end
 
   create_table "reviews", force: :cascade do |t|
+    t.bigint "restaurant_id"
     t.string "name"
     t.integer "rating"
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "restaurant_id"
     t.index ["restaurant_id"], name: "index_reviews_on_restaurant_id"
   end
 
-  create_table "tests", force: :cascade do |t|
-    t.string "name"
-    t.json "j"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+  add_foreign_key "restaurants", "cuisines"
+  add_foreign_key "reviews", "restaurants"
 end
