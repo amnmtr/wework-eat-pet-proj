@@ -12,5 +12,14 @@
 require 'rails_helper'
 
 RSpec.describe Cuisine, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'validations' do
+    it 'ensure name is mandatory' do
+      cuisine = Cuisine.new(:name => nil, :icon => nil).save
+      expect(cuisine).to eq(false)
+    end
+    it 'ensure cuisine save success' do
+      cuisine = Cuisine.new(:name => 'test_cuisine', :icon => nil).save
+      expect(cuisine).to eq(true)
+    end
+  end
 end
