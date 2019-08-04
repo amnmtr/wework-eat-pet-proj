@@ -1,46 +1,74 @@
-version: '3'
+version: '3.2'
+
+networks:
+  default:
+    external:
+      name: wework_dev
 
 services:
-  base: &app_base
-    image: ${CONTAINER_TAG:-quay.io/wework/bp-we-eat:master}
+
+
+  test_base: &test_app_base
+    build: .
+    # Uncomment to add environment variables
+    # env_file: .env
     environment:
+      # you can add more shared ENV here
+      # you can also have multiple env_files if you prefer
+      # committing it that way
+      #
+      # if you want to talk to something on the host
+      # you can use this as the url (replacing `localhost`):
+      # `host.docker.internal`
       - DATABASE_URL=postgres://postgres:R0tate1@pg/
+      - REDIS_URL=redis://redis:6379
+      - RABBIT_URL=amqp://guest:guest@rabbitmq
+      - NEW_RELIC_AGENT_ENABLED=false
+      - SIDEKIQ_USERNAME=admin
+      - SIDEKIQ_PASSWORD=admin
       - RAILS_ENV=test
+      - WORKER_TIMEOUT=3600
+      - SIGDUMP_SIGNAL=TSTP
+      - SIGDUMP_PATH=-
+      - BUNDLER_VERSION=2.0.2
     volumes:
+      # this replaces the project folder in the docker image with the current directory
       - ${PWD}:/app
-      - bp-we-eat-gems:/usr/local/bundle
+      # bp-we-eat-gems is a docker volume that will persist your gems for local use
+      # Since ruby gems are just interpreted files, we can persist the folder that they
+      # Contain easily
+      # - bp-we-eat-gems:/usr/local/bundle
+      # Spring volume just so all of the services can take advantage of spring
+      # Needs to be exposed to all of them
       - bp-we-eat-spring:/tmp/spring-0
+
+      - type: tmpfs
+        target: /app/tmp/pids/
     tty: true
     stdin_open: true
 
-  spring:
-    <<: *app_base
-    command: spring server
-
   test:
-    <<: *app_base
-    depends_on:
-      - pg
-    command: bin/rspec
+    <<: *test_app_base
+    command: "bundle exec rdebug-ide --debug  --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- bin/rspec"
+    ports:
+    - "1234:1234"
+    - "26162:26162"
 
-  pg:
-    image: postgres:10.5
-    environment:
-      - POSTGRES_PASSWORD=R0tate1
-      - POSTGRES_DB=bp-we-eat_test
 
   # Because you should care about security
   brakeman:
-    <<: *app_base
+    <<: *test_app_base
     command: brakeman -o brakeman-output.html
 
   # Because we all have opinions about code
   rubocop:
-    <<: *app_base
+    <<: *test_app_base
     command: rubocop -f html -o rubocop.html
 
 volumes:
   bp-we-eat-gems:
+    external: true
+  bp-we-eat-gems-backend:
     external: true
   bp-we-eat-spring:
     external: true
