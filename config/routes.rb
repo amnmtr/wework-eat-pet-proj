@@ -5,9 +5,13 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   scope :api do
     scope 'v1.0' do
-      resources :restaurants, only: :index
+      resources :restaurants, only: [:index, :show] do
+          resources :reviews, only: [:index, :show, :create, :update,:destroy]
+        end
       resources :cuisines, only: :index
-      resources :reviews, only: :create
+      resources :reviews, only: [:index, :create, :destroy]
+      post 'restaurants/:restaurant_id/rating', to: 'restaurants#average_rating', as: :average_restaurant_rating
+
     end
   end
 

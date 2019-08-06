@@ -15,6 +15,7 @@ fi
 
 docker volume rm bp-we-eat-gems &> /dev/null || /usr/bin/true
 docker volume create --name=bp-we-eat-gems
+docker volume create --name=bp-we-eat-gems-backend
 docker volume create --name=bp-we-eat-spring
 
 docker-compose run base bundle config --local without "production"
@@ -23,9 +24,6 @@ script/bootstrap
 
 docker-compose up -d pg spring
 docker-compose run base rails db:create db:migrate db:setup
-
-docker-compose -f docker-compose.test.yml up -d pg spring
-docker-compose -f docker-compose.test.yml run test rails db:create db:migrate db:setup db:test:prepare
 
 docker-compose -f docker-compose.yml build frontend
 # Add any additional initial data seeding/etc.

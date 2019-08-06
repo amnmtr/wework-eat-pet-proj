@@ -19,11 +19,22 @@ gem 'newrelic_rpm'
 gem 'pg'
 gem 'puma'
 gem 'rails'
+gem 'rake'
 gem 'sidekiq'
+gem 'active_model_serializers'
+gem "activemodel", require: "active_model"
+gem 'faraday'
+gem 'hashie'
+gem "json-schema"
+
+gem 'sigdump', require: 'sigdump/setup'
+
 
 group :development do
   gem 'annotate'
+  gem 'debase', '0.2.2'
   gem 'rubocop-airbnb', require: false
+  gem 'ruby-debug-ide', '0.7.0'
 end
 
 group :test do
@@ -36,10 +47,9 @@ end
 
 group :development, :test do
   gem 'brakeman'
-  gem 'byebug'
   gem 'dotenv-rails'
   gem 'dotenv-sync'
-  gem 'pry-byebug'
-  gem 'pry-rails'
+  gem 'ripper-tags'
   gem 'spring'
+  gem 'spring-watcher-listen'
 end
