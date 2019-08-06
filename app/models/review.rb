@@ -13,7 +13,7 @@
 
 class Review < ApplicationRecord
 
-  belongs_to :restaurant, foreign_key: :restaurant_id
+  belongs_to :restaurant, foreign_key: :restaurant_id, optional: true
 
   validates_presence_of :name, :rating
   validates_inclusion_of :rating, :in => 1..5
