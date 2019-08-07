@@ -1,10 +1,6 @@
 class RestaurantsController < ApplicationController
   include ActiveModel
 
-
-
-  end
-
   def index
     @restaurants = Restaurant.all
     render :json => @restaurants.to_json(except: [:created_at, :updated_at, :cuisine_id], include: {reviews: {except: [:id, :created_at, :updated_at, :restaurant_id]}, cuisine: {except: [:id, :created_at, :updated_at]}})
