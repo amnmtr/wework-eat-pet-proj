@@ -32,7 +32,7 @@ RSpec.describe Order, type: :model do
     
     it 'ensure status valid value' do
       order = Order.create(order_id: 'order_uuid', customer_name: 'name dummy', time: '2019-08-06 18:29:57', publish_time: '2019-08-06 18:29:57', status: 'DummyStatus')
-      expect(order).to eq(false)
+      expect(order.valid?).to eq(false)
     end
     it 'ensure order save success' do
       order = Order.create(order_id: 'order_uuid', customer_name: 'name dummy', time: '2019-08-06 18:29:57', publish_time: '2019-08-06 18:29:57', status: 'Received')
