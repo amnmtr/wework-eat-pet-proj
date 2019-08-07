@@ -16,10 +16,10 @@
 class Restaurant < ApplicationRecord
   require "json-schema"
 
-  has_many :reviews, foreign_key: :restaurant_id, dependent: :destroy
+  has_many :reviews, foreign_key: :restaurant_id, dependent: :destroy, autosave: true
   belongs_to :cuisine, foreign_key: :cuisine_id
 
-  validates_presence_of :name, :address, :max_delivery_time, :accepts_10bis, :coordinates, :cuisine_id
+  validates_presence_of :name, :address, :max_delivery_time, :coordinates, :cuisine_id
   validate :coordinates_is_a_json
   validates :max_delivery_time, :numericality => { :greater_than_or_equal_to => 0 }
   validates_inclusion_of :accepts_10bis, :in => [true, false]

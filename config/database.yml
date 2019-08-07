@@ -8,11 +8,12 @@ shared: &shared
 
 development:
   <<: *shared
+  url: postgres://postgres:R0tate1@pg/
   database: bp-we-eat_dev
 
 test:
   <<: *shared
-  url: postgres://postgres:R0tate1@pg:5103/
+  url: postgres://postgres:R0tate1@pg/
   database: bp-we-eat_test
 
 staging:
